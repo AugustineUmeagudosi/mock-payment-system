@@ -1,7 +1,7 @@
-export const userDetails = [
+export const customerDetails = [
     'id', 'name', 'email', 'createdAt'
 ];
 
 export const transactionDetails = [
-    'id', 'userId', 'amount', 'status', 'createdAt', 'updatedAt'
+    'id', 'userId', 'amount', 'status', 'paymentMode', 'createdAt', 'updatedAt'
 ];
