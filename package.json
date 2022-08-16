@@ -7,13 +7,15 @@
     "test": "test"
   },
   "scripts": {
-    "test": "cross-env NODE_ENV=test && sequelize db:migrate && nyc --reporter=lcov --reporter=text --reporter=text-summary mocha --require @babel/register \"./src/**/*.test.js\" --timeout 100000 --exit",
+    "test": "cross-env NODE_ENV=test && sequelize db:migrate && nyc --reporter=lcov --reporter=text --reporter=text-summary mocha --require @babel/register \"./src/**/*.test.js\" --timeout 200000 --exit",
     "start": "babel-node index.js",
     "dev": "nodemon --exec babel-node index.js",
     "migrate": "sequelize db:migrate",
     "migrate:create": "sequelize migration:create --name",
     "migrate:down": "sequelize db:migrate:undo",
-    "model:generate": "npx sequelize-cli model:generate --name Transaction --attributes data:string"
+    "seed:up": "sequelize db:seed",
+    "seed:down": "db:seed:undo:all",
+    "model:generate": "npx sequelize-cli model:generate --name modelName --attributes columnName:datatype"
   },
   "repository": {
     "type": "git",
