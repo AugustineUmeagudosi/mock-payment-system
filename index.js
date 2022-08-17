@@ -4,7 +4,7 @@ import expressConfig from './config/expressConfig';
 import 'dotenv/config';
 import './config/db_connection';
 import "./config/customerRPCServer";
-import "./config/billingWorkerRPCServer";
+import "./config/billingRPCServer";
 
 const port = process.env.PORT || 2000;
 const app = express();

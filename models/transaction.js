@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
   Transaction.init({
     customerId: { type: DataTypes.UUID, validate: { isUUID: 4 } },
     amount: DataTypes.FLOAT,
-    paymentMode: { type: DataTypes.STRING, validate: { isIn: ['cash', 'transfer', 'card', 'cheque', 'other'] } },
-    status: { type: DataTypes.STRING, validate: { isIn: ['pending', 'completed', 'failed'] } }
+    paymentMode: { type: DataTypes.STRING, validate: { isIn: [['cash', 'transfer', 'card', 'cheque', 'other']] } },
+    status: { type: DataTypes.STRING, validate: { isIn: [['pending', 'completed', 'failed']] } }
   }, {
     sequelize,
     modelName: 'Transaction',
