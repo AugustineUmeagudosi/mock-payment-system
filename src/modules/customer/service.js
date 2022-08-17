@@ -31,7 +31,11 @@ export const customerEnquiry = () => {
 };
 
 export const getCustomerById = (id) => {
-    logger.info('##########################')
     return Customer.findOne({ where: { id }, attributes: customerDetails })
         .catch(error => logger.error(error.message));
-}
+};
+
+export const seedCustomer = (customer) => {
+    return Customer.create(customer)
+        .catch(error => logger.error(error.message));
+};

@@ -8,11 +8,12 @@
   },
   "scripts": {
     "test": "cross-env NODE_ENV=test && sequelize db:migrate && nyc --reporter=lcov --reporter=text --reporter=text-summary mocha --require @babel/register \"./src/**/*.test.js\" --timeout 200000 --exit",
-    "start": "babel-node index.js",
-    "dev": "nodemon --exec babel-node index.js",
+    "start": "sequelize db:migrate && babel-node index.js",
+    "dev": "sequelize db:migrate && nodemon --exec babel-node index.js",
     "migrate": "sequelize db:migrate",
     "migrate:create": "sequelize migration:create --name",
     "migrate:down": "sequelize db:migrate:undo",
+    "seed:generate": "npx sequelize-cli seed:generate --name add-customer",
     "seed:up": "sequelize db:seed",
     "seed:down": "db:seed:undo:all",
     "model:generate": "npx sequelize-cli model:generate --name modelName --attributes columnName:datatype"
@@ -34,6 +35,7 @@
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "express-async-errors": "^3.1.1",
+    "faker": "^5.5.3",
     "helmet": "^5.1.0",
     "http-status": "^1.5.2",
     "joi": "^17.6.0",
@@ -54,6 +56,7 @@
     "chai-http": "^4.3.0",
     "cross-env": "^7.0.3",
     "mocha": "^9.2.2",
-    "nyc": "^15.1.0"
+    "nyc": "^15.1.0",
+    "sequelize-cli": "^6.4.1"
   }
 }
