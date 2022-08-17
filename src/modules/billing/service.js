@@ -33,7 +33,7 @@ export const postTransaction = (customerId, transaction, res) => {
                         await createTransaction(transaction);
                         // create job here
                         createJob({ type: process.env.BILLING_WORKER_EVENT, data: { transaction }, delay: 100 });
-                        return Response.info(res, 'Transaction posted successfully!', 200, null);
+                        return Response.info(res, 'Transaction posted successfully!', 201, null);
                     }
                 }, {
                     noAck: true
