@@ -1,5 +1,6 @@
 import amqp from 'amqplib/callback_api';
 import { Response, Constants } from "../../utils";
+import { createJob } from '../../../config/jobs';
 
 import { v4 as uuidv4 } from 'uuid';
 import { Sequelize, Transaction } from "../../../models";
@@ -31,6 +32,7 @@ export const postTransaction = (customerId, transaction, res) => {
                         
                         await createTransaction(transaction);
                         // create job here
+                        createJob({ type: process.env.BILLING_WORKER_EVENT, data: { transaction }, delay: 100 });
                         return Response.info(res, 'Transaction posted successfully!', 200, null);
                     }
                 }, {
