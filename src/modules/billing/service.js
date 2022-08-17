@@ -1,10 +1,52 @@
-import { Sequelize, Transaction } from "../../../models";
-import { connect } from 'amqplib';
+import amqp from 'amqplib/callback_api';
+import { Response, Constants } from "../../utils";
 
-const connection = connect(process.env.RABBITMQ_SERVER);
+import { v4 as uuidv4 } from 'uuid';
+import { Sequelize, Transaction } from "../../../models";
+
 const customerEnquiryQueue = process.env.CUSTOMER_ENQUIRY_QUEUE;
 const customerEnquiryResponseQueue = process.env.CUSTOMER_ENQUIRY_RESPONSE_QUEUE;
-const billingWorkerQueue = process.env.BILLING_WORKER_QUEUE;
+
+// fetch customer details from customer service
+export const postTransaction = (customerId, transaction, res) => {
+    amqp.connect(process.env.RABBITMQ_SERVER, function(error0, connection) {
+        if (error0) throw error0;
+
+        connection.createChannel(function(error1, channel) {
+            if (error1) {
+                throw error1;
+            }
+            channel.assertQueue(customerEnquiryResponseQueue, {
+                exclusive: false
+            }, function(error2, q) {
+                if (error2) throw error2;
+
+                const correlationId = uuidv4();
+    
+                channel.consume(q.queue, async function(msg) {
+                    if (msg.properties.correlationId === correlationId) {
+                        channel.ack(msg);
+                        channel.close(); 
+                        if(msg.content.toString() === 'null') return Response.error(res, `Invalid customer`, 400);
+                        
+                        await createTransaction(transaction);
+                        // create job here
+                        return Response.info(res, 'Transaction posted successfully!', 200, null);
+                    }
+                }, {
+                    noAck: true
+                });
+    
+                channel.sendToQueue(customerEnquiryQueue,
+                    Buffer.from(customerId.toString()), {
+                        correlationId: correlationId,
+                        replyTo: q.queue,
+                        headers: {method: 'getCustomerById'}
+                    });
+            });
+        });
+    });
+};
 
 export const createTransaction = (transaction) => {
     return Transaction.create(transaction)
@@ -16,43 +58,7 @@ export const getTransaction = (txid) => {
         .catch(error => logger.error(error.message));
 };
 
-// publishes customerId to customer service
-export const getCustomerById = (customerId) => {
-    connection.then((conn) => {
-        return conn.createChannel();
-      }).then((channel) => {
-        return channel.assertQueue(customerEnquiryQueue).then(() => {
-          return channel.sendToQueue(customerEnquiryQueue, Buffer.from(JSON.stringify(customerId)));
-        });
-    }).catch(error => logger.error(error.message));
-};
-
-// listens for customer details from customer service
-export const getCustomerEnquiryResponse = () => {
-    connection.then((conn) => {
-        return conn.createChannel();
-    }).then((channel) => {
-        return channel.assertQueue(customerEnquiryResponseQueue).then(() => {
-            return channel.consume(customerEnquiryResponseQueue, (msg) => {
-                if (msg !== null) {
-                    const customerData = JSON.parse(msg.content.toString());
-                    channel.ack(msg);
-                    channel.close();
-
-                    return customerData;
-                }
-            });
-        });
-    }).catch(error => logger.error(error.message));
-};
-
-// publishes transaction to billing worker service
-export const postTransactionToWorker = (transaction) => {
-    connection.then((conn) => {
-        return conn.createChannel();
-      }).then((channel) => {
-        return channel.assertQueue(billingWorkerQueue).then(() => {
-          return channel.sendToQueue(billingWorkerQueue, Buffer.from(JSON.stringify(transaction)));
-        });
-    }).catch(error => logger.error(error.message));
+export const updateTransaction = (transaction) => {
+    return Transaction.create(transaction)
+        .catch(error => logger.error(error.message));
 };

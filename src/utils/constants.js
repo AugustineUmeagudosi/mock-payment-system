@@ -3,5 +3,5 @@ export const customerDetails = [
 ];
 
 export const transactionDetails = [
-    'id', 'userId', 'amount', 'status', 'paymentMode', 'createdAt', 'updatedAt'
+    'id', 'customerId', 'amount', 'status', 'paymentMode', 'createdAt', 'updatedAt'
 ];
