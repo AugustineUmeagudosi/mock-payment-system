@@ -23,23 +23,15 @@ export const customerEnquiry = () => {
                     channel.ack(msg);
                     channel.close();
 
-                    postCustomerEnquiryResponse(customerId)
+                    return postCustomerEnquiryResponse(customerId)
                 }
             });
         });
     }).catch(error => logger.error(error.message));
 };
 
-// sends out customer enquiry response to the queue
-export const postCustomerEnquiryResponse = async(customerId) => {
-    const customer = await Customer.findOne({ where: { id: customerId }, attributes: customerDetails })
+export const getCustomerById = (id) => {
+    logger.info('##########################')
+    return Customer.findOne({ where: { id }, attributes: customerDetails })
         .catch(error => logger.error(error.message));
-
-    connection.then((conn) => {
-        return conn.createChannel();
-      }).then((channel) => {
-        return channel.assertQueue(customerEnquiryResponseQueue).then(() => {
-          return channel.sendToQueue(customerEnquiryResponseQueue, Buffer.from(JSON.stringify(customer)));
-        });
-    }).catch(error => logger.error(error.message));
 }
