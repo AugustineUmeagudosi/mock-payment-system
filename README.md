@@ -64,7 +64,7 @@ After installing node, this project will need yarn too, so just run the followin
 ## Running migrations
 
     $ run `npm run migrate` set up the database tables
-    $ run `sequelize db:seed` to seed user data
+    $ run `sequelize db:seed:all` to seed user data
 
 ---
 
@@ -95,7 +95,7 @@ After installing node, this project will need yarn too, so just run the followin
 
 ## Documentation
 
-    $ 
+    $ The API documentation can be found at `https://documenter.getpostman.com/view/17137732/VUqmvePz`
     
 ---
 

@@ -1,6 +1,7 @@
 import _ from "lodash";
-import { Response, Constants } from "../../utils";
-import { postTransaction, createTransaction, postTransactionToWorker } from "./service";
+import { v4 as uuidv4 } from 'uuid';
+import { Constants } from "../../utils";
+import { postTransaction } from "./service";
 
 /**
  * Fetches transaction information for a given op_return data
@@ -12,6 +13,7 @@ import { postTransaction, createTransaction, postTransactionToWorker } from "./s
 export const creditAccount = async (req, res) => {
     const transaction = _.pick(req.body, Constants.transactionDetails);
     transaction.status = 'pending';
+    transaction.id = uuidv4();
 
     return postTransaction(req.body.customerId, transaction, res);
 };
