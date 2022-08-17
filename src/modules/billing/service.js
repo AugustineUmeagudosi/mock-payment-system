@@ -1,5 +1,5 @@
 import amqp from 'amqplib/callback_api';
-import { Response, Constants } from "../../utils";
+import { Response } from "../../utils";
 import { createJob } from '../../../config/jobs';
 
 import { v4 as uuidv4 } from 'uuid';
@@ -60,7 +60,7 @@ export const getTransaction = (txid) => {
         .catch(error => logger.error(error.message));
 };
 
-export const updateTransaction = (transaction) => {
-    return Transaction.create(transaction)
+export const approveTransaction = (id) => {
+    return Transaction.update({ status: 'completed' }, { where: { id } })
         .catch(error => logger.error(error.message));
 };

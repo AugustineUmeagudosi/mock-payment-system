@@ -1,15 +1,11 @@
-/**
- * A collection of worker methods tha handles event related to videos.
- *
- * @class VideoWorker
- */
+import { processTransaction } from '../../../src/modules/billingWorker/service'
 class BillingWorker {
   static async processTransaction({ data }, done){
     try {
       const { transaction } = data;
-      logger.info(transaction);
-
-      logger.info(`##### transaction with the id ${transaction.id} approved #####`);
+      transaction.status = 'approved';
+      await processTransaction(transaction);
+      
       done();
     } catch (e) {
       logger.error(`##### Billing worker job failed #####`);

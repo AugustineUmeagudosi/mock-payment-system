@@ -1,10 +1,11 @@
 /* istanbul ignore file */
 import Queue from 'bull';
 import jobEvents from './events';
+const redisURL = process.env.REDIS_DB_URL
 
 export const queue = process.env.NODE_ENV === 'test'
-  ? new Queue('PaymentTestJobs', 'redis://127.0.0.1:6379')
-  : new Queue('PaymentJobs', 'redis://127.0.0.1:6379');
+  ? new Queue(process.env.REDIS_JOB_TEST_DB, redisURL)
+  : new Queue(process.env.REDIS_JOB_DB, redisURL);
 
 queue.setMaxListeners(queue.getMaxListeners() + 100);
 
