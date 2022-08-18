@@ -27,8 +27,8 @@ export const postTransaction = (customerId, transaction, res) => {
     
                 channel.consume(q.queue, async function(msg) {
                     if (msg.properties.correlationId === correlationId) {
-                        channel.ack(msg);
-                        channel.close(); 
+                        // channel.ack(msg);
+                        // channel.close(); 
                         if(msg.content.toString() === 'null') return Response.error(res, `Invalid customer`, 400);
                         
                         await createTransaction(transaction);

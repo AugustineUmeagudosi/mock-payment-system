@@ -70,6 +70,7 @@ After installing node, this project will need yarn too, so just run the followin
 
 ## Running the project locally
 
+    $ run `npm run setup` to create db and run migrations
     $ run `npm run dev` to serve the app with hot reload at `localhost:2000` or `http://127.0.0.1:2000`
 
 ## Running the project with docker
