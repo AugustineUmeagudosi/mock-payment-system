@@ -7,10 +7,11 @@ import { Sequelize, Transaction } from "../../../models";
 
 const customerEnquiryQueue = process.env.CUSTOMER_ENQUIRY_QUEUE;
 const customerEnquiryResponseQueue = process.env.CUSTOMER_ENQUIRY_RESPONSE_QUEUE;
+const rabbitMQServer = process.env.NODE_ENV === 'test' ? process.env.RABBITMQ_SERVER : process.env.RABBITMQ_SERVER_REMOTE;
 
 // fetch customer details from customer service
 export const postTransaction = (customerId, transaction, res) => {
-    amqp.connect(process.env.RABBITMQ_SERVER, function(error0, connection) {
+    amqp.connect(rabbitMQServer, function(error0, connection) {
         if (error0) throw error0;
 
         connection.createChannel(function(error1, channel) {

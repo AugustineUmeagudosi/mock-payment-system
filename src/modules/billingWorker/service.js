@@ -3,9 +3,10 @@ import { v4 as uuidv4 } from 'uuid';
 
 const billingQueue = process.env.BILLING_QUEUE;
 const transactionApprovalResponseQueue = process.env.TANSACTION_APPROVAL_RESPONSE_QUEUE;
+const rabbitMQServer = process.env.NODE_ENV === 'test' ? process.env.RABBITMQ_SERVER : process.env.RABBITMQ_SERVER_REMOTE;
 
 export const processTransaction = (transaction) => {
-    amqp.connect(process.env.RABBITMQ_SERVER, function(error0, connection) {
+    amqp.connect(rabbitMQServer, function(error0, connection) {
         if (error0) throw error0;
 
         connection.createChannel(function(error1, channel) {
