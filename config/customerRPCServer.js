@@ -1,7 +1,9 @@
 import amqp from 'amqplib/callback_api';
 import { getCustomerById } from "../src/modules/customer/service";
+
+const rabbitMQServer = process.env.NODE_ENV === 'test' ? process.env.RABBITMQ_SERVER : process.env.RABBITMQ_SERVER_REMOTE;
  
-amqp.connect(process.env.RABBITMQ_SERVER, function(error0, connection) {
+amqp.connect(rabbitMQServer, function(error0, connection) {
     if (error0) throw error0;
 
     connection.createChannel(async function(error1, channel) {

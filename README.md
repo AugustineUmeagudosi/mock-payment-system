@@ -57,20 +57,25 @@ After installing node, this project will need yarn too, so just run the followin
 
 ## Configure app
 
-    $ Create a `.env` on the project's root directory, copy and fill in the values for the variables listed on the `.env.example` file
+    $ Create a `.env` on the project's root directory, copy and fill in the missing values for the variables listed on the `.env.example` file
     $ create test and development databases for the project and fill in the name on the `TEST_DB_NAME` and `DB_NAME` on the .env file respectively
 ---
 
 ## Running migrations
 
     $ run `npm run migrate` set up the database tables
-    $ run `sequelize db:seed:all` to seed user data
+    $ run `npm run seed:up` to seed user data
 
 ---
 
 ## Running the project locally
 
     $ run `npm run dev` to serve the app with hot reload at `localhost:2000` or `http://127.0.0.1:2000`
+
+## Running the project with docker
+
+    $ run `docker build --tag mock-payment-api .` to create a docker image file
+    $ run `docker compose up` to start the app
 
 ---
 

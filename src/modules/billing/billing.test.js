@@ -12,6 +12,7 @@ chai.use(chaiHttp);
 describe('Billing API', () => {
     before( async () => {
         await seedCustomer(fixtures.customerInfo);
+        process.env.CUSTOMERID = fixtures.transactionInfo.customerId;
     });
 
     it('Should fail when payload contains wrong customerId', done => {
@@ -104,8 +105,6 @@ describe('Billing API', () => {
             .post(`/billing`)
             .send(fixtures.transactionInfo)
             .end((_err, res) => {
-                process.env.CUSTOMERID = fixtures.transactionInfo.customerId;
-
                 const { message } = res.body;
                 expect(res.statusCode).to.equal(201);
                 expect(message).to.equal('Transaction posted successfully!');

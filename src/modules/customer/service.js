@@ -2,9 +2,11 @@ import { Sequelize, Customer } from "../../../models";
 import { customerDetails } from "../../utils/constants";
 import { connect } from 'amqplib';
 
-const connection = connect(process.env.RABBITMQ_SERVER);
+
 const customerEnquiryQueue = process.env.CUSTOMER_ENQUIRY_QUEUE;
 const customerEnquiryResponseQueue = process.env.CUSTOMER_ENQUIRY_RESPONSE_QUEUE;
+const rabbitMQServer = process.env.NODE_ENV === 'test' ? process.env.RABBITMQ_SERVER : process.env.RABBITMQ_SERVER_REMOTE;
+const connection = connect(rabbitMQServer);
 
 export const createCustomer = (customer) => {
     return  Customer.create(customer)
