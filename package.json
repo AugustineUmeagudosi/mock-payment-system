@@ -7,6 +7,7 @@
     "test": "test"
   },
   "scripts": {
+    "setup": "npx sequelize-cli db:create && sequelize db:migrate",
     "test": "cross-env NODE_ENV=test && sequelize db:migrate && nyc --reporter=lcov --reporter=text --reporter=text-summary mocha --require @babel/register \"./src/**/*.test.js\" --timeout 200000 --exit",
     "start": "sequelize db:migrate && npm run seed:up && babel-node index.js",
     "dev": "sequelize db:migrate && nodemon --exec babel-node index.js",

@@ -22,10 +22,10 @@ export const customerEnquiry = () => {
             return channel.consume(customerEnquiryQueue, (msg) => {
                 if (msg !== null) {
                     const customerId = JSON.parse(msg.content.toString());
-                    channel.ack(msg);
-                    channel.close();
+                    // channel.ack(msg);
+                    // channel.close();
 
-                    return postCustomerEnquiryResponse(customerId)
+                    return postCustomerEnquiryResponse(customerId);
                 }
             });
         });
@@ -37,7 +37,7 @@ export const getCustomerById = (id) => {
         .catch(error => logger.error(error.message));
 };
 
-export const seedCustomer = (customer) => {
-    return Customer.create(customer)
-        .catch(error => logger.error(error.message));
+export const seedCustomer = async(customer) => {
+    const customerExists = await getCustomerById(customer.id);
+    if (!customerExists) return Customer.create(customer) .catch(error => logger.error(error.message));
 };
