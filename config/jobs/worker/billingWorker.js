@@ -3,7 +3,6 @@ class BillingWorker {
   static async processTransaction({ data }, done){
     try {
       const { transaction } = data;
-      transaction.status = 'approved';
       await processTransaction(transaction);
       
       done();

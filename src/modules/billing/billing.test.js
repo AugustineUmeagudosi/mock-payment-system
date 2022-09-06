@@ -100,7 +100,6 @@ describe('Billing API', () => {
     });
 
     it('should create a transaction', (done) => {
-        logger.info(fixtures.transactionInfo.customerId);
         chai.request(app)
             .post(`/billing`)
             .send(fixtures.transactionInfo)

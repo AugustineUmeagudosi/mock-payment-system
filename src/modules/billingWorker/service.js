@@ -10,9 +10,8 @@ export const processTransaction = (transaction) => {
         if (error0) throw error0;
 
         connection.createChannel(function(error1, channel) {
-            if (error1) {
-                throw error1;
-            }
+            if (error1) throw error1;
+            
             channel.assertQueue(transactionApprovalResponseQueue, {
                 exclusive: false
             }, function(error2, q) {
@@ -23,7 +22,7 @@ export const processTransaction = (transaction) => {
                 channel.consume(q.queue, async function(msg) {
                     if (msg.properties.correlationId === correlationId) {
                         // channel.ack(msg);
-                        // channel.close(); 
+                        channel.close(); 
 
                         if(msg.content.toString() === 'success')
                             return logger.info(`##### transaction with the id ${transaction.id} was approved #####`);

@@ -23,7 +23,7 @@ export const customerEnquiry = () => {
                 if (msg !== null) {
                     const customerId = JSON.parse(msg.content.toString());
                     // channel.ack(msg);
-                    // channel.close();
+                    channel.close();
 
                     return postCustomerEnquiryResponse(customerId);
                 }

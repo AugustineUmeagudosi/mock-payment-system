@@ -31,6 +31,8 @@ services:
       POSTGRES_PASSWORD: 1@m.
       POSTGRES_USER: postgres
       POSTGRES_DB: paymentAPI
+    ports:
+      - "5431:5432"
 
   web:
     image: mock-payment-api
